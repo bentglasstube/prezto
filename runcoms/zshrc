@@ -12,3 +12,21 @@ fi
 
 # Customize to your needs...
 
+alias config='git --git-dir=$HOME/.config.git/ --work-tree=$HOME'
+alias radio='mpc -h radio.eatabrick.org'
+alias changebg='feh --bg-fill $(find /home/alan/Dropbox/wallpapers |shuf -n1)'
+
+# check last update time and complain if more than one week
+# will this work in zsh?
+file="/var/lib/pacman/sync/community.db"
+if [ -f $file ]; then
+  now=$(date +%s)
+  old=$(stat -c %Y $file)
+  (( age=($now - $old) / 86400 ))
+  if [ $age -ge 7 ]; then
+    echo -e "\033[5m\033[31mLast update $age days ago\033[0m"
+  fi
+fi
+
+# whine about config file changes
+config status -sb
